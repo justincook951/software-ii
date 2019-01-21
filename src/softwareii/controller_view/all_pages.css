@@ -1,0 +1,63 @@
+.root{
+    -fx-background-color: lightgrey;
+}
+
+.label {
+    -fx-font-size: 20px;
+    -fx-text-fill: #2A5058;
+}
+
+.headerLabel {
+    -fx-font-size: 32px;
+    -fx-text-fill: #2A5058;
+}
+
+.errorLabel {
+    -fx-text-fill: #e02d1d;
+}
+
+.standard-padding>button{
+    -fx-padding: 10px;
+}
+
+#TitleLabel {
+    -fx-font-size: 24px;
+}
+
+.vbox-main {
+    -fx-border-color: darkgray;
+    -fx-border-insets: 5;
+    -fx-padding: 10;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+    -fx-border-radius: 3;
+}
+
+.button-boi{
+    -fx-background-color: white;
+    -fx-border: none;
+    -fx-text-color: black;  
+    -fx-padding: 16px 32px;
+}
+
+.button-boi:hover {
+    -fx-background-color: lightblue;
+    -fx-border: none;
+    -fx-text-color: white;  
+}
+
+.button-boi:pressed {
+    -fx-background-color: #008B8B;
+    -fx-border: none;
+    -fx-text-color: white; 
+}
+
+.border-bottom {
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
+}
+
+.choicebox-small {
+    -fx-min-height: 25px;
+    -fx-pref-height: 25px;
+}
