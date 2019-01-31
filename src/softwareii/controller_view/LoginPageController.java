@@ -16,6 +16,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import softwareii.dbFunctions.LoginDB;
 import java.sql.Timestamp;
+import java.util.Locale;
+import java.util.Properties;
 import softwareii.model.BaseClass;
 
 /**
@@ -29,10 +31,13 @@ public class LoginPageController extends BaseController implements Initializable
     @FXML private PasswordField loginPasswordField;
     @FXML private TextField usernameField;
     private LoginDB logindb;
+    private Properties props;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.logindb = new LoginDB();
+        Locale us = new Locale("en", "US");
+        props = getProps("en");
     }
     
     @FXML
@@ -46,9 +51,7 @@ public class LoginPageController extends BaseController implements Initializable
         }
         else {
             logLoginAttempt(attemptedUser, false);
-            String frenchWarning = "Nom d'utilisateur et mot de passe ne correspondent pas.";
-            String englishWarning = "Username and password do not match.";
-            errorLabel.setText(frenchWarning);
+            //errorLabel.setText(props.getProperty("loginWarning"));
             errorLabel.setVisible(true);
         }
     }
@@ -59,7 +62,7 @@ public class LoginPageController extends BaseController implements Initializable
         if (successful) {
             successString = "successful";
         }
-        String directoryLoc = new File("src/logfiles/").getAbsolutePath();
+        String directoryLoc = logPath();
         try {
             File directory = new File(directoryLoc);
             if (! directory.exists()){

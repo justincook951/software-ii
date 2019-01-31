@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="443.0" prefWidth="1053.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softwareii.controller_view.AppointmentPageController">
+<AnchorPane id="AnchorPane" prefHeight="458.0" prefWidth="1053.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softwareii.controller_view.AppointmentPageController">
      <stylesheets>
         <URL value="@all_pages.css" />
     </stylesheets>
@@ -34,15 +34,14 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Scheduling Customer" />
             <Label text="Appointment Date" GridPane.rowIndex="1" />
-            <Label text="Appointment Reason" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ChoiceBox prefHeight="25.0" prefWidth="150.0" styleClass="choicebox-small" GridPane.columnIndex="1" />
+            <ChoiceBox fx:id="customerDropdown" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" />
             <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="Appointment Time" GridPane.rowIndex="2" />
+            <Label text="Appointment Start" GridPane.rowIndex="2" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <TextField text="12" />
@@ -51,15 +50,25 @@
                   <ChoiceBox prefWidth="150.0" styleClass="choicebox-small" />
                </children>
             </HBox>
+            <Label layoutX="10.0" layoutY="165.0" text="Appointment End" GridPane.rowIndex="3" />
+            <HBox alignment="CENTER" layoutX="222.0" layoutY="146.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <TextField text="12" />
+                  <Label text=":" />
+                  <TextField text="15" />
+                  <ChoiceBox prefWidth="150.0" styleClass="choicebox-small" />
+               </children>
+            </HBox>
+            <Label text="Appointment Reason" GridPane.rowIndex="4" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Button layoutX="842.0" layoutY="384.0" mnemonicParsing="false" onAction="#returnHome" styleClass="button-boi" text="Cancel" />
+      <Button layoutX="842.0" layoutY="394.0" mnemonicParsing="false" onAction="#returnHome" styleClass="button-boi" text="Cancel" />
       <RadioButton layoutX="282.0" layoutY="21.0" mnemonicParsing="false" text="Monthly View">
          <toggleGroup>
             <ToggleGroup fx:id="calendar_select" />
          </toggleGroup>
       </RadioButton>
       <RadioButton layoutX="384.0" layoutY="21.0" mnemonicParsing="false" text="Weekly View" toggleGroup="$calendar_select" />
-      <Button layoutX="406.0" layoutY="394.0" mnemonicParsing="false" styleClass="button-boi" text="View Customer" />
    </children>  
 </AnchorPane>

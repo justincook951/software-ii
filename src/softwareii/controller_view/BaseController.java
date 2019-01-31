@@ -2,7 +2,11 @@
  */
 package softwareii.controller_view;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +21,8 @@ import javafx.stage.Stage;
  */
 public class BaseController {
     
+    protected static String delim = java.io.File.separator;
+    
     private Stage getStageInfo(ActionEvent e) {
         Stage stage = (Stage)this.getSceneInfo(e).getWindow();
         return stage;
@@ -25,6 +31,34 @@ public class BaseController {
     protected Scene getSceneInfo(ActionEvent e) {
         Scene stage = (Scene)((Node)e.getSource()).getScene();
         return stage;
+    }
+    
+    protected String rootPath() {
+        return new File("").getAbsolutePath();
+    }
+    
+    protected String resourcePath() {
+        return new File("src/resources/").getAbsolutePath();
+    }
+    
+    protected String logPath() {
+        return new File("src/logfiles/").getAbsolutePath();
+    }
+    
+    protected Properties getProps(String language) {
+        Properties returnProps = new Properties();
+        try {
+            //None of these work
+            //ResourceBundle resources = ResourceBundle.getBundle(resourcePath() + delim + "softwareii_en.properties");
+            //ResourceBundle resources = ResourceBundle.getBundle("src/resources/softwareii_en.properties");
+            //ResourceBundle resources = ResourceBundle.getBundle("src.resources.softwareii_en.properties");
+            //ResourceBundle resources = ResourceBundle.getBundle("softwareii.resources.softwareii_en.properties");
+            //resources.keySet().stream().forEach(k -> returnProps.put(k, resources.getString(k)));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return returnProps;
     }
     
     /*----------------------------------------

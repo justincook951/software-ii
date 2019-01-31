@@ -22,6 +22,7 @@ public class Query extends BaseClass {
     }
     
     public String getParamedString() {
+        //this.queryString = standardizeQuery(this.queryString); scrapped in favor of, er, writing the queries right the first time
         parameterizeQuery(this.queryString);
         return this.queryString;
     }
@@ -181,4 +182,32 @@ public class Query extends BaseClass {
         System.out.println(tempQueryStr);
         this.queryString = tempQueryStr;
     }
+    
+    /*protected String standardizeQuery(String queryString) {
+        queryString = queryString.replaceAll("[=]", " = ");
+        String[] strList = queryString.split(" ");
+        ArrayList<String> strArrayList = new ArrayList<>(Arrays.asList(strList));
+        String newQueryStr = "";
+        newQueryStr = strArrayList.stream().map((queryStrPart) -> {
+            if (queryStrPart.contains("(")) {
+                //ensure that there is a space before the "("
+                if (!queryStrPart.equals("now()")) {
+                    queryStrPart = queryStrPart.replace("(", " (");
+                }
+            }
+            return queryStrPart;
+        }).map((queryStrPart) -> {
+            if (queryStrPart.contains(")")) {
+                //ensure that there is a space after the ")"
+                if (!queryStrPart.equals("now()")) {
+                    queryStrPart = queryStrPart.replace(")", ") ");
+                }
+            }
+            return queryStrPart;
+        }).map((queryStrPart) -> queryStrPart + " ").reduce(newQueryStr, String::concat);
+        newQueryStr = newQueryStr.substring(0, newQueryStr.length() - 1);
+        newQueryStr = newQueryStr.trim().replaceAll(" +", " ");
+        return newQueryStr;
+    }*/
+    
 }

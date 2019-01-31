@@ -19,9 +19,9 @@ public class BaseClass {
     public static HashMap<String, String> convertToLower(HashMap<String, String> inbMap) { 
        HashMap<String, String> allLower = new HashMap<>();
        for (Map.Entry<String, String> entry : inbMap.entrySet()) {
-           String lowerKey = entry.getKey().toLowerCase();
+           String valKey = entry.getKey().toLowerCase();
            String value = entry.getValue();
-           allLower.put(lowerKey, value);
+           allLower.put(valKey, value);
        }
        return allLower;
     } 

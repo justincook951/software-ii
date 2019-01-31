@@ -15,14 +15,13 @@
     <children>
       <Label layoutX="23.0" layoutY="26.0" text="User Management" />
       <Label layoutX="662.0" layoutY="26.0" text="Scheduling and Calendar" />
-      <TableView layoutX="23.0" layoutY="80.0" prefHeight="206.0" prefWidth="450.0">
+      <TableView fx:id="customerTV" layoutX="23.0" layoutY="80.0" prefHeight="206.0" prefWidth="450.0">
         <columns>
-          <TableColumn prefWidth="151.0" text="Customer No." />
-          <TableColumn prefWidth="298.0" text="Customer Name" />
+            <TableColumn fx:id="customerIDCol" prefWidth="142.0" text="Customer No." />
+            <TableColumn fx:id="customerNameCol" prefWidth="307.0" text="Customer Name" />
         </columns>
       </TableView>
-      <Button layoutX="23.0" layoutY="292.0" mnemonicParsing="false" onAction="#loadUserPage" styleClass="button-boi" text="Add Customer" />
-      <Button layoutX="171.0" layoutY="292.0" mnemonicParsing="false" styleClass="button-boi" text="Edit Customer" />
+      <Button layoutX="23.0" layoutY="292.0" mnemonicParsing="false" onAction="#loadUserPage" styleClass="button-boi" text="Modify Customers" />
       <Button layoutX="320.0" layoutY="292.0" mnemonicParsing="false" styleClass="button-boi" text="Delete Customer" />
       <Button layoutX="1138.0" layoutY="381.0" mnemonicParsing="false" onAction="#exitProgram" styleClass="button-boi" text="Exit" />
       <TableView layoutX="662.0" layoutY="80.0" prefHeight="206.0" prefWidth="534.0">
@@ -32,9 +31,8 @@
             <TableColumn prefWidth="159.0" text="Phone No." />
         </columns>
       </TableView>
-      <Button layoutX="662.0" layoutY="292.0" mnemonicParsing="false" onAction="#loadAppointmentPage" styleClass="button-boi" text="Add Appt." />
-      <Button layoutX="871.0" layoutY="292.0" mnemonicParsing="false" styleClass="button-boi" text="Edit Appt." />
-      <Button layoutX="1065.0" layoutY="292.0" mnemonicParsing="false" styleClass="button-boi" text="Delete Appt." />
+      <Button layoutX="662.0" layoutY="292.0" mnemonicParsing="false" onAction="#loadAppointmentPage" styleClass="button-boi" text="Modify Appointments" />
+      <Button layoutX="1024.0" layoutY="292.0" mnemonicParsing="false" styleClass="button-boi" text="Delete Appointment" />
       <RadioButton layoutX="654.0" layoutY="381.0" mnemonicParsing="false" text="Month">
          <toggleGroup>
             <ToggleGroup fx:id="calendar_select" />

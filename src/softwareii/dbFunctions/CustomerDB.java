@@ -92,7 +92,7 @@ public class CustomerDB extends DB_Base {
         if (validator.containsNoEmpties(custMap, requiredList)) {
             String queryString = "INSERT INTO customer "
                     + "(customerName, addressId, active, createDate, createdBy, lastUpdateBy) "
-                    + "VALUES"
+                    + "VALUES "
                     + "(:customerName, :addressId, :active, now(), :createdBy, :lastUpdateBy)";
             this.run(queryString, custMap);
         }

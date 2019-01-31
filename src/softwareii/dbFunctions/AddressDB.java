@@ -68,7 +68,7 @@ public class AddressDB extends DB_Base {
         if (validator.containsNoEmpties(addressData, requiredList)) {
             String queryString = "INSERT INTO address "
                     + "(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdateBy) "
-                    + "VALUES"
+                    + "VALUES "
                     + "(:address, :address2, :cityId, :postalCode, :phone, now(), :createdBy, :lastUpdateBy)";
             result = this.insertAndGetID(queryString, addressData);
         }
@@ -90,7 +90,7 @@ public class AddressDB extends DB_Base {
                 + "phone = :phone, "
                 + "postalCode = :postalCode, "
                 + "cityId = :cityId, "
-                + "lastUpdateBy = :lastUpdateBy"
+                + "lastUpdateBy = :lastUpdateBy "
                 + "WHERE addressId = :addressId";
         this.run(queryString, addressData);
         return result;
@@ -132,7 +132,7 @@ public class AddressDB extends DB_Base {
             existingAddress = createNewAddress(addressMap);
         }
         else if (existingAddress == 0 && purpose.equals("update")) {
-            addressMap.put("key", Integer.toString(addressId));
+            addressMap.put("addressId", Integer.toString(addressId));
             existingAddress = updateOldAddress(addressMap);
         }
         return existingAddress;
