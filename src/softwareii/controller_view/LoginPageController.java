@@ -18,6 +18,7 @@ import softwareii.dbFunctions.LoginDB;
 import java.sql.Timestamp;
 import java.util.Locale;
 import java.util.Properties;
+import softwareii.initializer.Initializer;
 import softwareii.model.BaseClass;
 
 /**
@@ -35,9 +36,9 @@ public class LoginPageController extends BaseController implements Initializable
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.logindb = new LoginDB();
-        Locale us = new Locale("en", "US");
-        props = getProps("en");
+        this.logindb = Initializer.logindb;
+        Locale locale = Locale.getDefault();
+        props = getProps(locale);
     }
     
     @FXML
@@ -51,7 +52,7 @@ public class LoginPageController extends BaseController implements Initializable
         }
         else {
             logLoginAttempt(attemptedUser, false);
-            //errorLabel.setText(props.getProperty("loginWarning"));
+            errorLabel.setText(props.getProperty("loginWarning"));
             errorLabel.setVisible(true);
         }
     }

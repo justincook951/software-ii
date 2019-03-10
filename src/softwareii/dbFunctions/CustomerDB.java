@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import softwareii.initializer.Initializer;
 import softwareii.model.Customer;
 import softwareii.model.BaseClass;
 import softwareii.validator.Validator;
@@ -76,8 +77,8 @@ public class CustomerDB extends DB_Base {
     }
     
     public void newCustomer(String nameVal, String addressVal, String address2Val, int cityVal, int countryVal, int zipVal, String phoneVal) throws Exception {
-        AddressDB addressdb = new AddressDB();
-        Validator validator = new Validator();
+        AddressDB addressdb = Initializer.addressdb;
+        Validator validator = Initializer.validator;
         int existingAddress = addressdb.handleAddress(addressVal, address2Val, phoneVal, zipVal, cityVal, "create", 0);
         HashMap<String, String> custMap = new HashMap<>();
    
@@ -102,8 +103,8 @@ public class CustomerDB extends DB_Base {
     }
     
     public void updateCustomer(int customerID, String nameVal, String addressVal, String address2Val, int cityVal, int countryVal, int zipVal, String phoneVal) throws Exception {
-        AddressDB addressdb = new AddressDB();
-        Validator validator = new Validator();
+        AddressDB addressdb = Initializer.addressdb;
+        Validator validator = Initializer.validator;
         int addressId = 0;
         ResultSet customerData = this.getItemByID(customerID, customerIDName, customerDBName);
         while (customerData.next()) {
@@ -131,7 +132,7 @@ public class CustomerDB extends DB_Base {
     }
     
     public void deleteCustomer(int customerID) throws SQLException {
-        AddressDB addressdb = new AddressDB();
+        AddressDB addressdb = Initializer.addressdb;
         ResultSet customerData = this.getItemByID(customerID, customerIDName, customerDBName);
         int addressId = 0;
         while (customerData.next()) {

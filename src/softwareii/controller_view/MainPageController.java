@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import softwareii.dbFunctions.CustomerDB;
+import softwareii.initializer.Initializer;
 import softwareii.model.Customer;
 
 /**
@@ -37,7 +38,7 @@ public class MainPageController extends BaseController implements Initializable 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.customerDB = new CustomerDB();
+        this.customerDB = Initializer.customerdb;
         customerWrapper = FXCollections.observableArrayList(
             customerDB.getCustomers()
         );
@@ -45,13 +46,6 @@ public class MainPageController extends BaseController implements Initializable 
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         customerTV.getItems().setAll(customerWrapper);
         // TODO
-    }
-   
-    
-    @FXML
-    protected void loadAppointmentPage(ActionEvent e) throws IOException {
-        Parent pane = FXMLLoader.load(getClass().getResource("AppointmentPage.fxml"));
-        this.switchScene(pane, e);
     }
     
     @FXML

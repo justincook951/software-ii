@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import softwareii.initializer.Initializer;
 import softwareii.model.BaseClass;
 import softwareii.validator.Validator;
 
@@ -63,7 +64,7 @@ public class AddressDB extends DB_Base {
         int result = 0;
         //Ugh.
         ArrayList<String> requiredList = new ArrayList<>(requiredFields);
-        Validator validator = new Validator();
+        Validator validator = Initializer.validator;
         
         if (validator.containsNoEmpties(addressData, requiredList)) {
             String queryString = "INSERT INTO address "

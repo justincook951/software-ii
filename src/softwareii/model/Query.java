@@ -22,7 +22,6 @@ public class Query extends BaseClass {
     }
     
     public String getParamedString() {
-        //this.queryString = standardizeQuery(this.queryString); scrapped in favor of, er, writing the queries right the first time
         parameterizeQuery(this.queryString);
         return this.queryString;
     }
@@ -31,7 +30,7 @@ public class Query extends BaseClass {
         if (this.sortedParams.isEmpty()) {
             this.parameterizeQuery(this.queryString);
         }
-        System.out.println("sortedparams from inside method: " + sortedParams);
+        //System.out.println("sortedparams from inside method: " + sortedParams);
         return sortedParams;
     }
     
@@ -86,7 +85,7 @@ public class Query extends BaseClass {
             tempQueryStr += queryStrPart + " "; 
         }
         tempQueryStr = tempQueryStr.substring(0, tempQueryStr.length() - 1);
-        System.out.println(tempQueryStr);
+        //System.out.println(tempQueryStr);
         this.queryString = tempQueryStr;
     }
     
@@ -114,7 +113,7 @@ public class Query extends BaseClass {
                 //Add the key:value pair to sortedParams in the order that they appear in the query.
                 this.parameters.forEach(
                     (key, value) -> {
-                        System.out.println("I've split on " + paramSegTest + " and I am attempting to find a match.");
+                        //System.out.println("I've split on " + paramSegTest + " and I am attempting to find a match.");
                         if (key.equals(paramSegTest)) {
                            this.sortedParams.put(key, value); 
                         }
@@ -133,7 +132,7 @@ public class Query extends BaseClass {
             tempQueryStr += queryStrPart + " "; 
         }
         tempQueryStr = tempQueryStr.substring(0, tempQueryStr.length() - 2) + ")";
-        System.out.println(tempQueryStr);
+        //System.out.println(tempQueryStr);
         this.queryString = tempQueryStr;
     }
     
@@ -156,10 +155,10 @@ public class Query extends BaseClass {
                 //Add the key:value pair to sortedParams in the order that they appear in the query.
                 this.parameters.forEach(
                     (key, value) -> {
-                        System.out.println("I've split on " + paramSegTest + " and I am attempting to find a match.");
+                        //System.out.println("I've split on " + paramSegTest + " and I am attempting to find a match.");
                         if (key.equals(paramSegTest)) {
                            this.sortedParams.put(key, value); 
-                           System.out.println("I found a match for " + key);
+                           //System.out.println("I found a match for " + key);
                         }
                     }
                 );
@@ -179,35 +178,8 @@ public class Query extends BaseClass {
             tempQueryStr += queryStrPart + " "; 
         }
         tempQueryStr = tempQueryStr.substring(0, tempQueryStr.length() - 1);
-        System.out.println(tempQueryStr);
+        //System.out.println(tempQueryStr);
         this.queryString = tempQueryStr;
     }
-    
-    /*protected String standardizeQuery(String queryString) {
-        queryString = queryString.replaceAll("[=]", " = ");
-        String[] strList = queryString.split(" ");
-        ArrayList<String> strArrayList = new ArrayList<>(Arrays.asList(strList));
-        String newQueryStr = "";
-        newQueryStr = strArrayList.stream().map((queryStrPart) -> {
-            if (queryStrPart.contains("(")) {
-                //ensure that there is a space before the "("
-                if (!queryStrPart.equals("now()")) {
-                    queryStrPart = queryStrPart.replace("(", " (");
-                }
-            }
-            return queryStrPart;
-        }).map((queryStrPart) -> {
-            if (queryStrPart.contains(")")) {
-                //ensure that there is a space after the ")"
-                if (!queryStrPart.equals("now()")) {
-                    queryStrPart = queryStrPart.replace(")", ") ");
-                }
-            }
-            return queryStrPart;
-        }).map((queryStrPart) -> queryStrPart + " ").reduce(newQueryStr, String::concat);
-        newQueryStr = newQueryStr.substring(0, newQueryStr.length() - 1);
-        newQueryStr = newQueryStr.trim().replaceAll(" +", " ");
-        return newQueryStr;
-    }*/
     
 }

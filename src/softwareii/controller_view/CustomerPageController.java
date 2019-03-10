@@ -21,6 +21,7 @@ import softwareii.dbFunctions.CustomerDB;
 import softwareii.dbFunctions.CityDB;
 import softwareii.dbFunctions.CountryDB;
 import softwareii.dbFunctions.AddressDB;
+import softwareii.initializer.Initializer;
 
 public class CustomerPageController extends BaseController implements Initializable {
     
@@ -59,10 +60,10 @@ public class CustomerPageController extends BaseController implements Initializa
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.performUpdate = false;
-        this.customerDB = new CustomerDB();
-        this.cityDB = new CityDB();
-        this.countryDB = new CountryDB();
-        this.addressDB = new AddressDB();
+        this.customerDB = Initializer.customerdb;
+        this.cityDB = Initializer.citydb;
+        this.countryDB = Initializer.countrydb;
+        this.addressDB = Initializer.addressdb;
         try {
             this.populateCustomers();
             this.populateCountries();

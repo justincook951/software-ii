@@ -3,8 +3,8 @@
 package softwareii.controller_view;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -45,15 +45,11 @@ public class BaseController {
         return new File("src/logfiles/").getAbsolutePath();
     }
     
-    protected Properties getProps(String language) {
+    protected Properties getProps(Locale language) {
         Properties returnProps = new Properties();
         try {
-            //None of these work
-            //ResourceBundle resources = ResourceBundle.getBundle(resourcePath() + delim + "softwareii_en.properties");
-            //ResourceBundle resources = ResourceBundle.getBundle("src/resources/softwareii_en.properties");
-            //ResourceBundle resources = ResourceBundle.getBundle("src.resources.softwareii_en.properties");
-            //ResourceBundle resources = ResourceBundle.getBundle("softwareii.resources.softwareii_en.properties");
-            //resources.keySet().stream().forEach(k -> returnProps.put(k, resources.getString(k)));
+            ResourceBundle resources = ResourceBundle.getBundle("resources/softwareii", language);
+            resources.keySet().stream().forEach(k -> returnProps.put(k, resources.getString(k)));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -83,6 +79,12 @@ public class BaseController {
         catch (IOException ex) {
             //How did you get here!?
         }
+    }
+    
+    @FXML
+    protected void loadAppointmentPage(ActionEvent e) throws IOException {
+        Parent pane = FXMLLoader.load(getClass().getResource("AppointmentPage.fxml"));
+        this.switchScene(pane, e);
     }
     
     protected void switchScene(Parent pane, ActionEvent e) {

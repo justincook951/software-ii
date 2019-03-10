@@ -12,16 +12,14 @@ import java.util.List;
 import java.util.Map;
 import softwareii.model.Query;
 
-/**
- *
- * @author Jay
- */
 public class DB_Base {
 
     protected static Connection connection = null;
     protected static Statement statement = null;
     protected static PreparedStatement pstatement = null;
     protected static String driver = "com.mysql.cj.jdbc.Driver";
+    //You wanna steal my randomly generated DB creds for my school project? By all means, go for it. 
+    //I'm not going to make this into some configuration file. :P
     protected static String db = "U04fd2";
     protected static String url = "jdbc:mysql://52.206.157.109/" + db;
     protected static String user = "U04fd2";
