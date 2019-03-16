@@ -38,40 +38,10 @@ public class AppointmentDBTest {
     @After
     public void tearDown() {
     }
-
-    /**
-     * Test of getAppointments method, of class AppointmentDB.
-     */
-    @Test
-    public void testGetAppointments() {
-        AppointmentDB instance = new AppointmentDB();
-        //Appointment expResult = new Appointment();
-        long startUnix = 1549246387L * 1000;
-       
-        long endUnix = 1549249987L * 1000;
-        Appointment expapp = new Appointment(1, "Blood Drawing", 1, startUnix, endUnix);
-        ArrayList<Appointment> result = instance.getAppointments();
-        Appointment actapp = result.get(0);
-        assert(expapp.getStartTime() == actapp.getStartTime());
-        assert(expapp.getEndTime()== actapp.getEndTime());
-    }
     
     public void testAddAppointment() {
         AppointmentDB instance = new AppointmentDB();
         //Add a new appointment, using a pre-determined timestamp that is a Long integer value
     }
-
-    /*
-    @Test
-    public void testGetDBTimestamp() {
-        System.out.println("getDBTimestamp");
-        int appointmentId = 0;
-        AppointmentDB instance = new AppointmentDB();
-        String expResult = "";
-        String result = instance.getDBTimestamp(appointmentId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
     
 }

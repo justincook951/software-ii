@@ -25,7 +25,7 @@
       <TableView fx:id="appointmentTV" layoutX="14.0" layoutY="44.0" prefHeight="340.0" prefWidth="705.0">
         <columns>
           <TableColumn fx:id="customerIDCol" prefWidth="75.00003051757812" text="Cust ID" />
-          <TableColumn fx:id="apptDate" prefWidth="135.0" text="Date" />
+          <TableColumn fx:id="apptDateCol" prefWidth="135.0" text="Date" />
             <TableColumn fx:id="apptStart" prefWidth="120.0" text="Start" />
             <TableColumn fx:id="apptEnd" prefWidth="120.0" text="End" />
             <TableColumn fx:id="apptType" prefWidth="253.0" text="Appointment Type" />

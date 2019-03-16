@@ -4,6 +4,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -24,8 +25,8 @@ import softwareii.dbFunctions.AppointmentDB;
 import softwareii.dbFunctions.CustomerDB;
 import softwareii.initializer.Initializer;
 import softwareii.model.Appointment;
-import softwareii.model.BaseClass;
 import softwareii.model.Customer;
+import softwareii.model.TimeHandler;
 
 public class AppointmentPageController extends BaseController implements Initializable {
     
@@ -37,7 +38,7 @@ public class AppointmentPageController extends BaseController implements Initial
     @FXML private ChoiceBox endAMPM;
     @FXML private TableView<Appointment> appointmentTV;
     @FXML private TableColumn<Customer, Integer> customerIDCol;
-    @FXML private TableColumn<Customer, Integer> apptDate;
+    @FXML private TableColumn<Customer, Integer> apptDateCol;
     @FXML private TableColumn<Customer, Integer> apptStart;
     @FXML private TableColumn<Customer, Integer> apptEnd;
     @FXML private TableColumn<Customer, Integer> apptType;
@@ -86,7 +87,7 @@ public class AppointmentPageController extends BaseController implements Initial
             appointmentDB.getAppointments()
         );
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        apptDate.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
+        apptDateCol.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
         apptStart.setCellValueFactory(new PropertyValueFactory<>("startTime"));
         apptEnd.setCellValueFactory(new PropertyValueFactory<>("endTime"));
         apptType.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
@@ -159,18 +160,30 @@ public class AppointmentPageController extends BaseController implements Initial
             String finalStartStr = apptDateVal + " " + formattedStartStr;
             String finalEndStr = apptDateVal + " " + formattedEndStr;
             
+            //Build LocalDateTime to convert to ZonedDateTime
+            LocalDateTime startLDT = TimeHandler.buildLocalDateTime(finalStartStr);
+            LocalDateTime endLDT = TimeHandler.buildLocalDateTime(finalEndStr);
+            
+            //Build a Local Time Zone based ZonedDateTime
+            ZonedDateTime localStartZDT = TimeHandler.buildLocalZonedDateTime(startLDT);
+            ZonedDateTime localEndZDT = TimeHandler.buildLocalZonedDateTime(endLDT);
+            
+            //Convert Local Time Zoned based ZonedDateTime to UTC
+            ZonedDateTime UTCZoneStartTime = TimeHandler.convertLocalZDTtoUTC(localStartZDT);
+            ZonedDateTime UTCZoneEndTime = TimeHandler.convertLocalZDTtoUTC(localEndZDT);
+            
+            //Build SQL Strings based on UTC ZonedDateTime
+            String startSQL = TimeHandler.buildInsertFromZDT(UTCZoneStartTime);
+            String endSQL = TimeHandler.buildInsertFromZDT(UTCZoneEndTime);
+            
             try {
-                LocalDateTime finalStartTime = BaseClass.localStringToLocalDateTime(finalStartStr);
-                LocalDateTime finalEndTime = BaseClass.localStringToLocalDateTime(finalEndStr);
                 
-                Long unixStart = BaseClass.localTimeToUTCUnix(finalStartTime);
-                Long unixEnd = BaseClass.localTimeToUTCUnix(finalEndTime);
                 if (isEditing) {
                     int appointmentId = Integer.parseInt(appointmentIdField.getText());
-                    appointmentDB.updateAppointment(appointmentId, customerId, apptReason, unixStart, unixEnd);
+                    appointmentDB.updateAppointment(appointmentId, customerId, apptReason, startSQL, endSQL);
                 }
                 else {
-                    appointmentDB.newAppointment(customerId, apptReason, unixStart, unixEnd);
+                    appointmentDB.newAppointment(customerId, apptReason, startSQL, endSQL);
                 }
                 
                 //Refresh the view

@@ -25,7 +25,7 @@ TODO:
 public class AppointmentDB extends DB_Base {
     
     public ArrayList<Appointment> getAppointments() {
-        String queryString = "SELECT appointmentId, customerId, description, UNIX_TIMESTAMP(start) AS start, UNIX_TIMESTAMP(end) AS end FROM appointment";
+        String queryString = "SELECT appointmentId, customerId, description, start, end FROM appointment";
         HashMap<String, String> params = new HashMap<>();
         ArrayList<Appointment> appointments = new ArrayList();
         try {
@@ -33,15 +33,14 @@ public class AppointmentDB extends DB_Base {
            int customerId;
            int apptId;
            String apptReason;
-           long start;
-           long end;
+           String start;
+           String end;
            while (results.next()) {
                customerId = results.getInt("customerId");
                apptReason = results.getString("description");
                apptId = results.getInt("appointmentId");
-               start = results.getLong("start") * 1000;
-               System.out.println("Start is " + start + ", gathered from the DB class.");
-               end = results.getLong("end") * 1000;
+               start = results.getString("start");
+               end = results.getString("end");
                Appointment appointment = new Appointment(customerId, apptReason, apptId, start, end);
                appointments.add(appointment);
            }
@@ -52,7 +51,7 @@ public class AppointmentDB extends DB_Base {
         return appointments;
     }
     
-    public void newAppointment(int customerId, String description, long start, long end) throws SQLException {
+    public void newAppointment(int customerId, String description, String start, String end) throws SQLException {
         String query = "INSERT INTO appointment "
                 + "(`customerId`, `description`, `start`, `end`, `createDate`, `createdBy`, `lastUpdate`, `lastUpdateBy`) "
                 + "VALUES "
@@ -60,14 +59,14 @@ public class AppointmentDB extends DB_Base {
         HashMap<String, String> params = new HashMap<>();
         params.put("customerId", Integer.toString(customerId));
         params.put("description", description);
-        params.put("start", BaseClass.unixTimeToTimestamp(start));
-        params.put("end", BaseClass.unixTimeToTimestamp(end));
+        params.put("start", start);
+        params.put("end", end);
         params.put("createdBy", BaseClass.getLoggedInUser());
         params.put("lastUpdateBy", BaseClass.getLoggedInUser());
         this.run(query, params);
     }
     
-    public void updateAppointment(int appointmentId, int customerId, String description, long start, long end) throws SQLException {
+    public void updateAppointment(int appointmentId, int customerId, String description, String start, String end) throws SQLException {
         String query = "UPDATE appointment "
                 + "SET customerId = :customerId, "
                 + "description = :description, "
@@ -79,8 +78,8 @@ public class AppointmentDB extends DB_Base {
         params.put("appointmentId", Integer.toString(appointmentId));
         params.put("customerId", Integer.toString(customerId));
         params.put("description", description);
-        params.put("start", BaseClass.unixTimeToTimestamp(start));
-        params.put("end", BaseClass.unixTimeToTimestamp(end));
+        params.put("start", start);
+        params.put("end", end);
         params.put("lastUpdateBy", BaseClass.getLoggedInUser());
         this.run(query, params);
     }

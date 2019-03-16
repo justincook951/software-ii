@@ -1,6 +1,7 @@
 package softwareii.initializer;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import softwareii.dbFunctions.AddressDB;
 import softwareii.dbFunctions.AppointmentDB;
@@ -23,8 +24,6 @@ public class Initializer {
     public static Validator validator = new Validator();
     
     //Zone offset for timestamp functions
-    public static OffsetDateTime odt = OffsetDateTime.now ();
-    public static ZoneOffset zoneOffset = odt.getOffset ();
-    
+    public static ZoneId currentZone = ZoneId.systemDefault();
     
 }
