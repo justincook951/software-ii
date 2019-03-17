@@ -74,13 +74,14 @@
          </children>
       </GridPane>
       <Button layoutX="1079.0" layoutY="394.0" mnemonicParsing="false" onAction="#returnHome" styleClass="button-boi" text="Cancel" />
-      <RadioButton layoutX="282.0" layoutY="21.0" mnemonicParsing="false" text="Monthly View">
+      <RadioButton layoutX="282.0" layoutY="21.0" mnemonicParsing="false" onAction="#updateAppointmentsList" text="Monthly View">
          <toggleGroup>
-            <ToggleGroup fx:id="calendar_select" />
+            <ToggleGroup fx:id="intervalSelect" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton layoutX="384.0" layoutY="21.0" mnemonicParsing="false" text="Weekly View" toggleGroup="$calendar_select" />
+      <RadioButton layoutX="384.0" layoutY="21.0" mnemonicParsing="false" onAction="#updateAppointmentsList" text="Weekly View" toggleGroup="$intervalSelect" />
       <Label fx:id="warningLabel" layoutX="14.0" layoutY="443.0" styleClass="errorLabel" text="This is a warning label." />
       <TextField fx:id="appointmentIdField" disable="true" editable="false" layoutX="965.0" layoutY="26.0" text="New Appointment" />
+      <RadioButton layoutX="211.0" layoutY="21.0" mnemonicParsing="false" onAction="#updateAppointmentsList" selected="true" text="View All" toggleGroup="$intervalSelect" />
    </children>  
 </AnchorPane>

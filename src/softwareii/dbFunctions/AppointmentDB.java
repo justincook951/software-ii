@@ -26,6 +26,25 @@ public class AppointmentDB extends DB_Base {
     
     public ArrayList<Appointment> getAppointments() {
         String queryString = "SELECT appointmentId, customerId, description, start, end FROM appointment";
+        return performAppointmentsQuery(queryString);
+    }
+    
+    public ArrayList<Appointment> getAppointments(String interval) {
+        String queryString = "SELECT appointmentId, customerId, description, start, end FROM appointment";
+        switch (interval) {
+            case "week":
+                queryString += " WHERE YEARWEEK(`start`, 1) = YEARWEEK(CURDATE(), 1)";
+                break;
+            case "month":
+                queryString += " WHERE MONTH(`start`) = MONTH(CURDATE())";
+                break;
+            default:
+                break;
+        }
+        return performAppointmentsQuery(queryString);
+    }
+    
+    protected ArrayList<Appointment> performAppointmentsQuery(String queryString) {
         HashMap<String, String> params = new HashMap<>();
         ArrayList<Appointment> appointments = new ArrayList();
         try {
@@ -49,6 +68,23 @@ public class AppointmentDB extends DB_Base {
             
         }
         return appointments;
+    }
+    
+    public int getUpcomingAppointmentCount() {
+        String queryString = "SELECT count(*) AS count FROM appointment WHERE start > NOW() - INTERVAL 1 WEEK";
+        HashMap<String, String> params = new HashMap<>();
+        int count = 0;
+        try {
+           ResultSet results = this.execute(queryString, params); 
+           int customerId;
+           while (results.next()) {
+               count = results.getInt("count");
+           }
+        }
+        catch (SQLException e) {
+            
+        }
+        return count;
     }
     
     public void newAppointment(int customerId, String description, String start, String end) throws SQLException {

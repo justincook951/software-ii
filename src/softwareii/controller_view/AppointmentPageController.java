@@ -17,9 +17,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import softwareii.dbFunctions.AppointmentDB;
 import softwareii.dbFunctions.CustomerDB;
@@ -52,6 +54,7 @@ public class AppointmentPageController extends BaseController implements Initial
     @FXML private TextField endMin;
     @FXML private DatePicker pickedApptDate;
     @FXML private TextField appointmentReason;
+    @FXML private ToggleGroup intervalSelect;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,6 +73,7 @@ public class AppointmentPageController extends BaseController implements Initial
         startAMPM.setItems(FXCollections.observableArrayList("AM","PM"));
         endAMPM.setItems(FXCollections.observableArrayList("AM","PM"));
     }
+    
     protected void populateCustomers() {
         ArrayList<Customer> customers = customerDB.getCustomers();
         ArrayList<String> custNames = new ArrayList<>();
@@ -79,13 +83,41 @@ public class AppointmentPageController extends BaseController implements Initial
         customerDropdown.setItems(FXCollections.observableArrayList(
             custNames
         ));
-        
+    }
+    
+    @FXML
+    protected void updateAppointmentsList() {
+        RadioButton selectedRadioButton = (RadioButton) intervalSelect.getSelectedToggle();
+        String toogleGroupValue = selectedRadioButton.getText();
+        String interval = "all";
+        switch(toogleGroupValue) {
+            case "Monthly View":
+                interval = "month";
+                break;
+            case "Weekly View":
+                interval = "week";
+                break;
+            default:
+                break;
+        }
+        populateAppointments(interval);
     }
     
     protected void populateAppointments() {
         appointmentWrapper = FXCollections.observableArrayList(
             appointmentDB.getAppointments()
         );
+        setAppointmentFactories();
+    }
+    
+    protected void populateAppointments(String appointmentInterval) {
+        appointmentWrapper = FXCollections.observableArrayList(
+            appointmentDB.getAppointments(appointmentInterval)
+        );
+        setAppointmentFactories();
+    }
+    
+    protected void setAppointmentFactories() {
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         apptDateCol.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
         apptStart.setCellValueFactory(new PropertyValueFactory<>("startTime"));
@@ -111,7 +143,7 @@ public class AppointmentPageController extends BaseController implements Initial
             }
         }
         catch (NullPointerException exception) {
-            warningLabel.setText("No customer selected.");
+            warningLabel.setText("No appointment selected.");
         }
     }
     

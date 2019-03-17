@@ -15,6 +15,7 @@ public class Appointment extends BaseClass {
     public Appointment(int customerID, String appointmentType, int appointmentId, String start, String end) {
         this.customerID = customerID;
         this.appointmentType = appointmentType;
+        //Appointments in UTC time are useless to us. Convert them to local time on object instantiation for consistency
         ZonedDateTime inboundStartZDT = TimeHandler.ZDTFromQueryString(start, "yyyy-MM-dd HH:mm:ss"); //UTC Time
         ZonedDateTime convertedStartZDT = TimeHandler.convertUTCZDTtoLocal(inboundStartZDT); //Local Time
         this.apptDate = convertedStartZDT.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
