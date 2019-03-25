@@ -2,6 +2,7 @@ package softwareii.controller_view;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -29,6 +30,7 @@ import softwareii.initializer.Initializer;
 import softwareii.model.Appointment;
 import softwareii.model.Customer;
 import softwareii.model.TimeHandler;
+import softwareii.validator.Validator;
 
 public class AppointmentPageController extends BaseController implements Initializable {
     
@@ -149,9 +151,9 @@ public class AppointmentPageController extends BaseController implements Initial
     
     @FXML protected void editAppt(ActionEvent e) {
         warningLabel.setText("");
-        editingLabel.setText("Editing Appointment: ");
         Appointment selectedAppt = appointmentTV.getSelectionModel().getSelectedItem();
         if (selectedAppt != null) {
+            editingLabel.setText("Editing Appointment: ");
             isEditing = true;
             String apptId = Integer.toString(selectedAppt.getAppointmentId());
             appointmentIdField.setText(apptId);
@@ -164,7 +166,11 @@ public class AppointmentPageController extends BaseController implements Initial
     @FXML protected void createAppt(ActionEvent e) {
         //*Sigh* not my best work.
         warningLabel.setText("");
-        if (validated()) {
+        int appointmentId = 0;
+        if (isEditing) {
+            appointmentId = Integer.parseInt(appointmentIdField.getText());
+        }
+        if (validated(appointmentId)) {
             String customerSelection = customerDropdown.getValue().toString();
             int customerId = -1;
             if (!customerSelection.equals("")) {
@@ -173,45 +179,11 @@ public class AppointmentPageController extends BaseController implements Initial
                 System.out.println(customerId);
             }
             String apptReason = appointmentReason.getText();
-            
-            //Getting start and end times
-            String startHrStr = Integer.toString(Integer.parseInt(startHr.getText()));
-            String startMinStr = String.format("%02d", Integer.parseInt(startMin.getText()));
-            String startAMPMVal = endAMPM.getValue().toString();
-            String localStartStr = startHrStr + ":" + startMinStr + " " + startAMPMVal; // -_- when you just need something that works
-            String formattedStartStr = this.formatToProperTime(localStartStr);
-            
-            String endHrStr = Integer.toString(Integer.parseInt(endHr.getText()));
-            String endMinStr = String.format("%02d", Integer.parseInt(endMin.getText()));
-            String endAMPMVal = endAMPM.getValue().toString();
-            String localEndStr = endHrStr + ":" + endMinStr + " " + endAMPMVal;
-            String formattedEndStr = this.formatToProperTime(localEndStr);
-            
-            String apptDateVal = pickedApptDate.getValue().toString();
-            
-            String finalStartStr = apptDateVal + " " + formattedStartStr;
-            String finalEndStr = apptDateVal + " " + formattedEndStr;
-            
-            //Build LocalDateTime to convert to ZonedDateTime
-            LocalDateTime startLDT = TimeHandler.buildLocalDateTime(finalStartStr);
-            LocalDateTime endLDT = TimeHandler.buildLocalDateTime(finalEndStr);
-            
-            //Build a Local Time Zone based ZonedDateTime
-            ZonedDateTime localStartZDT = TimeHandler.buildLocalZonedDateTime(startLDT);
-            ZonedDateTime localEndZDT = TimeHandler.buildLocalZonedDateTime(endLDT);
-            
-            //Convert Local Time Zoned based ZonedDateTime to UTC
-            ZonedDateTime UTCZoneStartTime = TimeHandler.convertLocalZDTtoUTC(localStartZDT);
-            ZonedDateTime UTCZoneEndTime = TimeHandler.convertLocalZDTtoUTC(localEndZDT);
-            
             //Build SQL Strings based on UTC ZonedDateTime
-            String startSQL = TimeHandler.buildInsertFromZDT(UTCZoneStartTime);
-            String endSQL = TimeHandler.buildInsertFromZDT(UTCZoneEndTime);
-            
+            String startSQL = this.buildTimeSQL("start");
+            String endSQL = this.buildTimeSQL("end");
             try {
-                
                 if (isEditing) {
-                    int appointmentId = Integer.parseInt(appointmentIdField.getText());
                     appointmentDB.updateAppointment(appointmentId, customerId, apptReason, startSQL, endSQL);
                 }
                 else {
@@ -241,8 +213,9 @@ public class AppointmentPageController extends BaseController implements Initial
         return formattedString;
     }
     
-    private boolean validated() {
+    private boolean validated(int appointmentId) {
         boolean valid = true;
+        Validator validator = new Validator();
         try {
             if (customerDropdown.getValue() == null) {
                 throw new Exception("Please select a customer.");
@@ -250,10 +223,14 @@ public class AppointmentPageController extends BaseController implements Initial
             if (pickedApptDate.getValue() == null) {
                 throw new Exception("Please select a date for the appointment.");
             }
-            if (startHr.getText().replaceAll("[^\\d.]", "").equals("") 
-                    || endHr.getText().replaceAll("[^\\d.]", "").equals("") 
-                    || startMin.getText().replaceAll("[^\\d.]", "").equals("")
-                    || endMin.getText().replaceAll("[^\\d.]", "").equals("")) {
+            String startHrInput = scrubInputs(startHr.getText());
+            String endHrInput = scrubInputs(endHr.getText());
+            String startMinInput = scrubInputs(startMin.getText());
+            String endMinInput = scrubInputs(endMin.getText());
+            if (startHrInput.equals("") 
+                    || endHrInput.equals("") 
+                    || startMinInput.equals("")
+                    || endMinInput.equals("")) {
                 throw new Exception("Ensure your time values are correct.");
             }
             if (startAMPM.getValue() == null || endAMPM.getValue() == null) {
@@ -261,6 +238,18 @@ public class AppointmentPageController extends BaseController implements Initial
             }
             if (appointmentReason.getText().equals("")) {
                 throw new Exception("Please provide an appointment reason / description.");
+            }
+            
+            LocalTime startTime = LocalTime.parse(this.getTimeValues("start"));
+            LocalTime endTime = LocalTime.parse(getTimeValues("end"));
+            if (!validator.isInOperatingHours(startTime) || !validator.isInOperatingHours(endTime)) {
+                throw new Exception("Please put your appointment in the operating hours for your store.");
+            }
+            String startSQL = this.buildTimeSQL("start");
+            String endSQL = this.buildTimeSQL("end");
+            int overlappingCount = appointmentDB.getOverlappingAppointmentCount(startSQL, endSQL, appointmentId);
+            if (overlappingCount > 0) {
+                throw new Exception("You attempted to submit an overlapping appointment. Don't do that.");
             }
         }
         catch (Exception ex) {
@@ -274,5 +263,50 @@ public class AppointmentPageController extends BaseController implements Initial
             ex.printStackTrace();
         }
         return valid;
+    }
+    
+    protected String scrubInputs(String input) {
+        return input.replaceAll("[^\\d.]", "");
+    }
+    
+    protected String getTimeValues(String startOrEnd) {
+        String hrStr = "";
+        String minStr = "";
+        String AMPMVal = "";
+        switch (startOrEnd) {
+            case "start":
+                hrStr = String.format("%02d", Integer.parseInt(startHr.getText()));
+                minStr = String.format("%02d", Integer.parseInt(startMin.getText()));
+                AMPMVal = startAMPM.getValue().toString();
+                break;
+            case "end":
+                hrStr = String.format("%02d", Integer.parseInt(endHr.getText()));
+                minStr = String.format("%02d", Integer.parseInt(endMin.getText()));
+                AMPMVal = endAMPM.getValue().toString();
+                break;
+            default:
+                break;
+        }
+        String localStartStr = hrStr + ":" + minStr + " " + AMPMVal; // -_- when you just need something that works
+        return this.formatToProperTime(localStartStr);
+    }
+    
+    protected String buildTimeSQL(String startOrEnd) {
+        String returnSQL = "";
+        if (startOrEnd.equals("start") || startOrEnd.equals("end")) {
+            //Get times and format them
+            String formattedTimeStr = this.getTimeValues(startOrEnd);
+            String apptDateVal = pickedApptDate.getValue().toString();
+            String finalTimeStr = apptDateVal + " " + formattedTimeStr;
+            //Build LocalDateTime to convert to ZonedDateTime
+            LocalDateTime timeLDT = TimeHandler.buildLocalDateTime(finalTimeStr);
+            //Build a Local Time Zone based ZonedDateTime
+            ZonedDateTime localTimeZDT = TimeHandler.buildLocalZonedDateTime(timeLDT);
+            //Convert Local Time Zoned based ZonedDateTime to UTC
+            ZonedDateTime UTCZoneTime = TimeHandler.convertLocalZDTtoUTC(localTimeZDT);
+            //Build SQL Strings based on UTC ZonedDateTime
+            returnSQL = TimeHandler.buildInsertFromZDT(UTCZoneTime);
+        }
+        return returnSQL;
     }
 }

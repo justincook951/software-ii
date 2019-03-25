@@ -87,6 +87,12 @@ public class BaseController {
         this.switchScene(pane, e);
     }
     
+    @FXML
+    protected void loadReportPage(ActionEvent e) throws IOException {
+        Parent pane = FXMLLoader.load(getClass().getResource("ReportingPage.fxml"));
+        this.switchScene(pane, e);
+    }
+    
     protected void switchScene(Parent pane, ActionEvent e) {
         Scene switchScene = new Scene(pane);
         Stage stage = this.getStageInfo(e);

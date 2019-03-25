@@ -34,5 +34,7 @@
       <Button layoutX="1024.0" layoutY="292.0" mnemonicParsing="false" onAction="#deleteAppointment" styleClass="button-boi" text="Delete Appointment" />
       <Label fx:id="warningLabel" layoutX="23.0" layoutY="366.0" styleClass="errorLabel" text="This is a warning label." />
       <Label fx:id="comingApptLabel" layoutX="662.0" layoutY="358.0" text="You have an appointment soon!" />
+      <Label layoutX="496.0" layoutY="26.0" styleClass="headerLabel" text="Reporting" />
+      <Button layoutX="503.0" layoutY="80.0" mnemonicParsing="false" onAction="#loadReportPage" styleClass="button-boi" text="Pull Reports" />
    </children>
 </AnchorPane>

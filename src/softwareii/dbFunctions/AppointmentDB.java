@@ -71,18 +71,43 @@ public class AppointmentDB extends DB_Base {
     }
     
     public int getUpcomingAppointmentCount() {
-        String queryString = "SELECT count(*) AS count FROM appointment WHERE start > NOW() - INTERVAL 1 WEEK";
+        String queryString = "SELECT count(*) AS count FROM appointment WHERE start BETWEEN NOW() AND  NOW() + INTERVAL 15 MINUTE";
         HashMap<String, String> params = new HashMap<>();
         int count = 0;
         try {
            ResultSet results = this.execute(queryString, params); 
-           int customerId;
            while (results.next()) {
                count = results.getInt("count");
            }
         }
         catch (SQLException e) {
             
+        }
+        return count;
+    }
+    
+    public int getOverlappingAppointmentCount(String start, String end, int appointmentId) {
+        String queryString = "SELECT count(*) AS count FROM appointment WHERE "
+                + "( :start1 BETWEEN start AND end OR :end1 BETWEEN start AND end "
+                + "OR start BETWEEN :start2 AND :end2 ) ";
+        HashMap<String, String> params = new HashMap<>();
+        if (appointmentId != 0) {
+            queryString += " AND appointmentId != :appointmentId";
+            params.put("appointmentId", Integer.toString(appointmentId));
+        }
+        params.put("start1", start);
+        params.put("end1", end);
+        params.put("start2", start);
+        params.put("end2", end);      
+        int count = 0;
+        try {
+           ResultSet results = this.execute(queryString, params); 
+           while (results.next()) {
+               count = results.getInt("count");
+           }
+        }
+        catch (SQLException e) {
+            // :(
         }
         return count;
     }

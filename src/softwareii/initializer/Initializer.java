@@ -1,14 +1,13 @@
 package softwareii.initializer;
 
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import softwareii.dbFunctions.AddressDB;
 import softwareii.dbFunctions.AppointmentDB;
 import softwareii.dbFunctions.CityDB;
 import softwareii.dbFunctions.CountryDB;
 import softwareii.dbFunctions.CustomerDB;
 import softwareii.dbFunctions.LoginDB;
+import softwareii.dbFunctions.ReportsDB;
 import softwareii.validator.Validator;
 
 public class Initializer {
@@ -19,6 +18,7 @@ public class Initializer {
     public static CountryDB countrydb = new CountryDB();
     public static CustomerDB customerdb = new CustomerDB();
     public static LoginDB logindb = new LoginDB();
+    public static ReportsDB reportsdb = new ReportsDB();
     
     //Validator
     public static Validator validator = new Validator();

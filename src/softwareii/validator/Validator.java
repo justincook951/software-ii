@@ -2,6 +2,7 @@
  */
 package softwareii.validator;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +12,13 @@ import java.util.stream.Collectors;
 
 public class Validator {
     
+    protected ValidationsCollections vc;
+    
+    public Validator() {
+        vc = new ValidationsCollections();
+    }
+    
     public boolean containsNoEmpties(HashMap<String, String> paramMap, ArrayList<String> requiredFields) {
-        ValidationsCollections vc = new ValidationsCollections();
         //Only require checking if the column is in the requiredFields list
         List<String> checkableFields = paramMap.entrySet()
                 .stream()
@@ -23,13 +29,15 @@ public class Validator {
     }
     
     public boolean isNotNull(String t) {
-        ValidationsCollections vc = new ValidationsCollections();
         return vc.notNullStr.test(t);
     }
     
     public boolean isNotNull(int t) {
-        ValidationsCollections vc = new ValidationsCollections();
         return vc.notNullInt.test(t);
+    }
+    
+    public boolean isInOperatingHours(LocalTime t) {
+        return vc.inOperatingHours.test(t);
     }
     
 }
