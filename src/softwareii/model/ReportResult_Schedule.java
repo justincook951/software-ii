@@ -12,22 +12,27 @@ import java.util.HashMap;
  *
  * @author Jay
  */
-public class ReportResult_ApptTypes extends ReportResult {
+public class ReportResult_Schedule extends ReportResult {
     
     //Required fields for instantiation; matches query result fields
-    protected String number;
+    protected String start;
+    protected String end;
     protected String description;
-    
-    public ReportResult_ApptTypes(ArrayList<String> columnNames, HashMap<String, String> columnResults) {
-        super(columnNames, columnResults);
+
+    public String getStart() {
+        return start;
     }
 
-    public String getNumber() {
-        return number;
+    public void setStart(String start) {
+        this.start = start;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public String getDescription() {
@@ -36,6 +41,10 @@ public class ReportResult_ApptTypes extends ReportResult {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public ReportResult_Schedule(ArrayList<String> columnNames, HashMap<String, String> columnResults) {
+        super(columnNames, columnResults);
     }
 
     

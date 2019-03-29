@@ -22,5 +22,6 @@
       <Label layoutX="392.0" layoutY="97.0" text="Consultant" />
       <Button layoutX="14.0" layoutY="337.0" mnemonicParsing="false" onAction="#getReport" styleClass="button-boi" text="Pull Report" />
       <TableView fx:id="resultsTV" layoutX="560.0" layoutY="12.0" prefHeight="318.0" prefWidth="414.0" />
+      <Label fx:id="resultsLabel" layoutX="560.0" layoutY="337.0" styleClass="errorLabel" text="No results found." />
    </children>
 </AnchorPane>

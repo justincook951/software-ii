@@ -100,7 +100,6 @@ public class CustomerPageController extends BaseController implements Initializa
                 this.loadUserPage(e);
             }
             catch (Exception ex) {
-                //Test code pls ignore
                 warningLabel.setText(ex.getMessage());
             }
         }
@@ -112,7 +111,6 @@ public class CustomerPageController extends BaseController implements Initializa
                 this.loadUserPage(e);
             }
             catch (Exception ex) {
-                    //Test code pls ignore
                 warningLabel.setText(ex.getMessage());
             }
         }

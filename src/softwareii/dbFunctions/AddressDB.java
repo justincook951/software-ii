@@ -35,10 +35,11 @@ public class AddressDB extends DB_Base {
     });
     
     protected static List<String> requiredFields = Arrays.asList(new String[] {
-        "customerName",
-        "addressId",
-        "createdBy",
-        "lastUpdateBy"
+        "address", 
+        "address2",
+        "cityId",
+        "postalCode",
+        "phone"
     });
     
     public int findAddressId(HashMap addressData) {
@@ -82,18 +83,25 @@ public class AddressDB extends DB_Base {
     public int updateOldAddress(HashMap addressData) throws Exception {
         int result = 0;
         ArrayList<String> columnsList = new ArrayList<>(columns);
-        columnsList.remove("createDate");
-        columnsList.remove("createdBy");
-        columnsList.add("key");
-        String queryString = "UPDATE address "
-                + "SET address = :address, "
-                + "address2 = :address2, "
-                + "phone = :phone, "
-                + "postalCode = :postalCode, "
-                + "cityId = :cityId, "
-                + "lastUpdateBy = :lastUpdateBy "
-                + "WHERE addressId = :addressId";
-        this.run(queryString, addressData);
+        ArrayList<String> requiredList = new ArrayList<>(requiredFields);
+        Validator validator = Initializer.validator;
+        if (validator.containsNoEmpties(addressData, requiredList)) {
+            columnsList.remove("createDate");
+            columnsList.remove("createdBy");
+            columnsList.add("key");
+            String queryString = "UPDATE address "
+                    + "SET address = :address, "
+                    + "address2 = :address2, "
+                    + "phone = :phone, "
+                    + "postalCode = :postalCode, "
+                    + "cityId = :cityId, "
+                    + "lastUpdateBy = :lastUpdateBy "
+                    + "WHERE addressId = :addressId";
+            this.run(queryString, addressData);
+        }
+        else {
+            throw new Exception("Invalid input received. Please ensure all of your input is valid.");
+        } 
         return result;
     }
     

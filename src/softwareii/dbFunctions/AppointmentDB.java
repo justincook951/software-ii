@@ -7,20 +7,6 @@ import java.util.HashMap;
 import softwareii.model.Appointment;
 import softwareii.model.BaseClass;
 
-/*
-Time flow (UI to DB) -> Combine user input into a timezone string. Parse the timezone string ON IMPORT into UTC. Convert this timezone string into Unix time.
-Other operations can now commence. Then, Input Unix time into DB.
-Time flow (DB to UI) -> Return Unix time. Perform operations, if necessary, and logic. Then, convert time to local timezone. Then, convert to a displayable string.
-
-General idea: Do everything as much as possible with UTC-based Long Unix values. Only when a time needs to be displayed should it be converted to local time.
-
-TODO:
-1. Test UTC Unix Long values inserting directly into DB. Is that gonna break shit?
-2. Write unit tests for insert and confirm that values can then be pulled as expected.
-3. Write delete functionality by ID.
-4. (probably not tonight) build connection between JavaFX front-end and controller to shuffle the information to the insert functionality.
-    4a. Build a class or base function set to convert from local to UTC and then to Long stamp? Probably.
-*/
 
 public class AppointmentDB extends DB_Base {
     
