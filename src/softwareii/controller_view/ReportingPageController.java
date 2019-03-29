@@ -77,7 +77,7 @@ public class ReportingPageController extends BaseController implements Initializ
                 setColumns("newCustomers");
                 break;
             default:
-                resultsLabel.setText("Please choose a report type.");
+                resultsLabel.setText(props.getProperty("noReport"));
                 break;
         }
         
@@ -109,11 +109,11 @@ public class ReportingPageController extends BaseController implements Initializ
                         setValues(reportResults);
                     }
                     else {
-                        resultsLabel.setText("No results found.");
+                        resultsLabel.setText(props.getProperty("noResults"));
                     }
                 }
                 else {
-                    resultsLabel.setText("Please select a month.");
+                    resultsLabel.setText(props.getProperty("noMonth"));
                 }
                 
                 break;
@@ -131,11 +131,11 @@ public class ReportingPageController extends BaseController implements Initializ
                         setValues(reportResults);
                     }
                     else {
-                        resultsLabel.setText("No results found.");
+                        resultsLabel.setText(props.getProperty("noResults"));
                     }
                 }
                 else {
-                    resultsLabel.setText("Please select a consultant.");
+                    resultsLabel.setText(props.getProperty("noConsultant"));
                 }
                 break;
             case "newCustomers":
@@ -151,11 +151,11 @@ public class ReportingPageController extends BaseController implements Initializ
                         setValues(reportResults);
                     }
                     else {
-                        resultsLabel.setText("No results found.");
+                        resultsLabel.setText(props.getProperty("noResults"));
                     }
                 }
                 else {
-                    resultsLabel.setText("Please select a month.");
+                    resultsLabel.setText(props.getProperty("noMonth"));
                 }
                 break;
             default:

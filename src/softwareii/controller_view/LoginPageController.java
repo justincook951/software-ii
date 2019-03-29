@@ -16,8 +16,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import softwareii.dbFunctions.LoginDB;
 import java.sql.Timestamp;
-import java.util.Locale;
-import java.util.Properties;
 import softwareii.initializer.Initializer;
 import softwareii.model.BaseClass;
 
@@ -32,13 +30,10 @@ public class LoginPageController extends BaseController implements Initializable
     @FXML private PasswordField loginPasswordField;
     @FXML private TextField usernameField;
     private LoginDB logindb;
-    private Properties props;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.logindb = Initializer.logindb;
-        Locale locale = Locale.getDefault();
-        props = getProps(locale);
     }
     
     @FXML

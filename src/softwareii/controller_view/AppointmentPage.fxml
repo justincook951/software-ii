@@ -84,5 +84,6 @@
       <TextField fx:id="appointmentIdField" disable="true" editable="false" layoutX="965.0" layoutY="26.0" text="New Appointment" />
       <RadioButton layoutX="211.0" layoutY="21.0" mnemonicParsing="false" onAction="#updateAppointmentsList" selected="true" text="View All" toggleGroup="$intervalSelect" />
       <Label layoutX="313.0" layoutY="413.0" text="Operating hours are 8 AM to 6 PM local, daily." />
+      <Label layoutX="14.0" layoutY="8.0" text="Scheduling Manager" />
    </children>  
 </AnchorPane>

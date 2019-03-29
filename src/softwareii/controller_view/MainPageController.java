@@ -52,7 +52,10 @@ public class MainPageController extends BaseController implements Initializable 
         this.populateCustomers();
         this.populateAppointments();
         if (!this.hasUpcomingAppointment()) {
-            this.comingApptLabel.setText("You don't have any appointments in the next 15 minutes.");
+            this.comingApptLabel.setText(props.getProperty("nofifteenMinutes"));
+        }
+        else {
+            this.comingApptLabel.setText(props.getProperty("fifteenMinutes"));
         }
     }
     
@@ -98,7 +101,7 @@ public class MainPageController extends BaseController implements Initializable 
             }
         }
         catch (NullPointerException exception) {
-            warningLabel.setText("No customer selected.");
+            warningLabel.setText(props.getProperty("noCustomer"));
         }
     }
     
@@ -118,7 +121,7 @@ public class MainPageController extends BaseController implements Initializable 
             }
         }
         catch (NullPointerException exception) {
-            warningLabel.setText("No appointment selected.");
+            warningLabel.setText(props.getProperty("noAppointment"));
         }
     }
     

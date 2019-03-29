@@ -4,6 +4,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,9 +58,12 @@ public class CustomerPageController extends BaseController implements Initializa
     @FXML private TableColumn<Customer, String> phoneCol;
     @FXML private TableView<Customer> customerTV;
     @FXML private Label warningLabel;
+    private Properties props;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Locale locale = Locale.getDefault();
+        props = getProps(locale);
         this.performUpdate = false;
         this.customerDB = Initializer.customerdb;
         this.cityDB = Initializer.citydb;
@@ -119,16 +124,21 @@ public class CustomerPageController extends BaseController implements Initializa
     @FXML protected void editCustomerClicked() {
         warningLabel.setText("");
         Customer selectedCustomer = customerTV.getSelectionModel().getSelectedItem();
-        customerID.setText(Integer.toString(selectedCustomer.getCustomerID()));
-        customerName.setText(selectedCustomer.getCustomerName());
-        address.setText(selectedCustomer.getAddress1());
-        address2.setText(selectedCustomer.getAddress2());
-        country.setValue(selectedCustomer.getCountryName());
-        updateCitiesCB();
-        city.setValue(selectedCustomer.getCityName());     
-        zip.setText(Integer.toString(selectedCustomer.getZip()));
-        phone.setText(selectedCustomer.getPhone());
-        this.performUpdate = true;
+        if (selectedCustomer != null) {
+            customerID.setText(Integer.toString(selectedCustomer.getCustomerID()));
+            customerName.setText(selectedCustomer.getCustomerName());
+            address.setText(selectedCustomer.getAddress1());
+            address2.setText(selectedCustomer.getAddress2());
+            country.setValue(selectedCustomer.getCountryName());
+            updateCitiesCB();
+            city.setValue(selectedCustomer.getCityName());     
+            zip.setText(Integer.toString(selectedCustomer.getZip()));
+            phone.setText(selectedCustomer.getPhone());
+            this.performUpdate = true;
+        }
+        else {
+            warningLabel.setText(props.getProperty("noCustomer"));
+        }
     }
     
     protected void populateCustomers() {
@@ -179,7 +189,7 @@ public class CustomerPageController extends BaseController implements Initializa
             }
         }
         catch (NullPointerException exception) {
-            warningLabel.setText("No customer selected.");
+            warningLabel.setText(props.getProperty("noCustomer"));
         }
     }
     

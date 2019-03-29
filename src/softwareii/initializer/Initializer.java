@@ -1,6 +1,7 @@
 package softwareii.initializer;
 
 import java.time.ZoneId;
+import java.util.Locale;
 import softwareii.dbFunctions.AddressDB;
 import softwareii.dbFunctions.AppointmentDB;
 import softwareii.dbFunctions.CityDB;
@@ -26,4 +27,5 @@ public class Initializer {
     //Zone offset for timestamp functions
     public static ZoneId currentZone = ZoneId.systemDefault();
     
+    public static Locale locale = Locale.getDefault();
 }

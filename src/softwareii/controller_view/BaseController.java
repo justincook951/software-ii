@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import softwareii.initializer.Initializer;
 
 /**
  *
@@ -22,6 +23,8 @@ import javafx.stage.Stage;
 public class BaseController {
     
     protected static String delim = java.io.File.separator;
+    protected static Locale locale = Initializer.locale;
+    protected final Properties props = getProps(locale);
     
     private Stage getStageInfo(ActionEvent e) {
         Stage stage = (Stage)this.getSceneInfo(e).getWindow();
@@ -49,6 +52,7 @@ public class BaseController {
         Properties returnProps = new Properties();
         try {
             ResourceBundle resources = ResourceBundle.getBundle("resources/softwareii", language);
+            //Allows us to intuitively find and set the resource results in the properties files for later use
             resources.keySet().stream().forEach(k -> returnProps.put(k, resources.getString(k)));
         }
         catch (Exception e) {
